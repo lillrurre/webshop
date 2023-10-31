@@ -1,0 +1,25 @@
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    name: frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '21'
+      - name: Update npm
+        run: npm i -g npm@latest
+      - name: Install dependencies
+        run: |
+          node --version
+          npm --version
+          cd frontend
+          npm i -D
+      - name: ESLint
+        run: |
+          cd frontend
+          npm run lint
