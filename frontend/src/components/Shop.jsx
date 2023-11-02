@@ -1,6 +1,7 @@
 import {useContext, useEffect, useState} from 'react';
 import {UserContext} from './UserContext.jsx';
 import {useNavigate} from 'react-router-dom';
+import NotLoggedIn from "./NotLoggedIn.jsx";
 
 
 const dummy = [
@@ -78,6 +79,12 @@ const Shop = () => {
 
   }
 
+  if (user === null) {
+    return (
+      <NotLoggedIn/>
+    )
+  }
+
   return (
     <div>
       <div>
@@ -133,7 +140,7 @@ const Shop = () => {
           </div>
         </div>
       </div>
-          <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-screen">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
           <div key={item.id} className="card w-96 bg-base-300/25 text-primary-content">
