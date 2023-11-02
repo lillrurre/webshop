@@ -1,5 +1,4 @@
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
 
 
 /**
@@ -8,13 +7,6 @@ import {useState} from "react";
  * @constructor
  */
 const NotLoggedIn = () => {
-
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [isError, setIsError] = useState(true);
-
-  const handleGenerateDBData = () => {
-  }
-
 
   const navigate = useNavigate();
 

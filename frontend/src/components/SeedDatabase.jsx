@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 
 const SeedDatabase = () => {
@@ -7,7 +7,8 @@ const SeedDatabase = () => {
   const [isError, setIsError] = useState(true);
 
   const handleGenerateDBData = () => {
-
+    setIsSuccess(!isSuccess)
+    setIsError(!isError)
   }
 
 

@@ -1,8 +1,5 @@
-import {useNavigate} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "./UserContext.jsx";
-import NotLoggedIn from "./NotLoggedIn.jsx";
-
 
 
 const dummy = [
@@ -48,10 +45,10 @@ const dummy = [
 const Inventory = () => {
 
   const { user } = useContext(UserContext);
+  console.log(user)
 
   const [items, setItems] = useState([])
 
-  const navigate = useNavigate()
 
   useEffect(() => {
     fetch('http://localhost:8080/', {
