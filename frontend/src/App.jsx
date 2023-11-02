@@ -1,9 +1,9 @@
-import React from "react";
-import {Route, Routes} from "react-router-dom";
-import Login from "./components/login.jsx";
-import Shop from "./components/shop.jsx";
-import Signup from "./components/Signup.jsx";
-import {UserProvider} from "./components/UserContext.jsx";
+import React from 'react';
+import {Route, Routes} from 'react-router-dom';
+import Login from './components/login.jsx';
+import Shop from './components/shop.jsx';
+import Signup from './components/Signup.jsx';
+import {UserProvider} from './components/UserContext.jsx';
 
 const App = () => {
 
@@ -11,9 +11,9 @@ const App = () => {
     <div>
       <UserProvider>
         <Routes>
-          <Route path={"/"} element={<Shop />}></Route>
-          <Route path={"/login"} element={<Login />}></Route>
-          <Route path={"/signup"} element={<Signup />}></Route>
+          <Route path={'/'} element={<Shop />}></Route>
+          <Route path={'/login'} element={<Login />}></Route>
+          <Route path={'/signup'} element={<Signup />}></Route>
         </Routes>
       </UserProvider>
     </div>

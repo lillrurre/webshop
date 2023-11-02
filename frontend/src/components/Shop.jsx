@@ -1,6 +1,6 @@
-import {useContext, useEffect, useState} from "react";
-import {UserContext} from "./UserContext.jsx";
-import {useNavigate} from "react-router-dom";
+import {useContext, useEffect, useState} from 'react';
+import {UserContext} from './UserContext.jsx';
+import {useNavigate} from 'react-router-dom';
 
 
 const dummy = [
@@ -52,15 +52,15 @@ const Shop = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch("http://localhost:8080", {
-      method: "GET",
+    fetch('http://localhost:8080/', {
+      method: 'GET',
     })
         .then((res) => res.json())
         .then((data) => {
           setItems({...data})
         })
         .catch((error) => {
-          console.error("failed to fetch items: " + error)
+          console.error('failed to fetch items: ' + error)
           setItems(dummy) // TODO
         })
   }, [])
@@ -117,7 +117,7 @@ const Shop = () => {
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
-                  <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                  <img src=""  alt={}/>
                 </div>
               </label>
               <ul tabIndex={0} className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
