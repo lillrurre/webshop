@@ -1,7 +1,9 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import {UserContext} from "./UserContext.jsx";
+import {useNavigate} from "react-router-dom";
 
 
-const items = [
+const dummy = [
   {
     id: 1,
     owner: 'user1',
@@ -39,16 +41,15 @@ const items = [
     available: false,
   },
 ];
-/*
 
-          <div key={item.id}>
-            <h2></h2>
-            <p>Price: ${item.price}</p>
-          </div>
- */
 const Shop = () => {
 
+  const { user, logout } = useContext(UserContext);
+
+  const [items, setItems] = useState([])
   const [cart, setCart] = useState([])
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetch("http://localhost:8080", {
@@ -56,10 +57,26 @@ const Shop = () => {
     })
         .then((res) => res.json())
         .then((data) => {
-          setCart({...data})
+          setItems({...data})
         })
-        .catch((error) => console.error("failed to fetch items: " + error))
+        .catch((error) => {
+          console.error("failed to fetch items: " + error)
+          setItems(dummy) // TODO
+        })
   }, [])
+
+  const handleAddToCart = () => {
+
+  }
+
+  const handleLogOut = () => {
+    logout()
+    navigate('/login')
+  }
+
+  const handleManageAccount = () => {
+
+  }
 
   return (
     <div>
@@ -68,6 +85,9 @@ const Shop = () => {
           <div className="flex-1">
             <a className="btn btn-ghost normal-case text-xl">Web shop</a>
           </div>
+            <div className="form-control">
+              <input type="text" placeholder="Search for items" className="placeholder-neutral-content/40 input input-bordered border-neutral w-auto input-lg me-4" />
+            </div>
           <div className="flex-none">
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle">
@@ -100,15 +120,14 @@ const Shop = () => {
                   <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
                 </div>
               </label>
-              <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+              <ul tabIndex={0} className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                 <li>
                   <a className="justify-between">
-                    Profile
-                    <span className="badge">New</span>
+                    {user.email}
                   </a>
                 </li>
-                <li><a>Settings</a></li>
-                <li><a>Logout</a></li>
+                <li><button onClick={handleManageAccount}>Account</button></li>
+                <li><button onClick={handleLogOut}>Logout</button></li>
               </ul>
             </div>
           </div>
@@ -117,26 +136,29 @@ const Shop = () => {
           <div className="flex items-center justify-center h-screen">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
-          <div key={item.id} className="card w-96 bg-neutral text-primary-content"><div className="card shadow-xl">
-            <div className="card-body">
-              <h2 className="card-title">
-                {item.title}
-                <div className="badge badge-outline badge-accent">{item.available? "In stock" : "Out of stock"}</div>
-                <div className="badge badge-outline badge-secondary">{item.owner}</div>
-              </h2>
-              <p>{item.description}</p>
-                <p>Price: {item.price} €</p>
-              <div className="card-actions justify-end">
-                <p className="text-accent-focus/60">Added on: {item.dateAdded}</p>
+          <div key={item.id} className="card w-96 bg-base-300/25 text-primary-content">
+            <div className="card shadow-xl">
+              <div className="card-body">
+                <h2 className="card-title text-neutral-content/100">
+                  {item.title}
+                    <div className="absolute top-6 right-6">{item.owner}</div>
+                </h2>
+                <p className="text-neutral-content/100">{item.description}</p>
+                <div className="flex justify-between items-center">
+                  <div className="text-neutral-content/60">Added on: {item.dateAdded}</div>
+                  <div className="badge badge-outline badge-secondary">{item.available ? "In stock" : "Out of stock"}</div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <p className="text-neutral-content/100 text-xl">{item.price} €</p>
+                  <button value={item} onClick={handleAddToCart} className="btn btn-circle btn-neutral text-xl">+</button>
+                </div>
               </div>
-            </div>
           </div>
         </div>
         ))}
       </div>
     </div>
     </div>
-
   )
 }
 
