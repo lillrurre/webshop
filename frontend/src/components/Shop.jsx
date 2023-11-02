@@ -66,7 +66,7 @@ const Shop = () => {
   }, [])
 
   const handleAddToCart = () => {
-
+    setCart(items)
   }
 
   const handleLogOut = () => {
@@ -102,7 +102,7 @@ const Shop = () => {
                   <span className="text-info">Sum: {cart.reduce((sum, item) => sum + item.price, 0)}</span>
                   <ul>
                     {items.map((item) => (
-                    <li>
+                    <li key={item.id}>
                       <div>
                         <a>{item.title}</a>
                         <a>{item.price}</a>
@@ -117,7 +117,7 @@ const Shop = () => {
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
-                  <img src=""  alt={}/>
+
                 </div>
               </label>
               <ul tabIndex={0} className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
