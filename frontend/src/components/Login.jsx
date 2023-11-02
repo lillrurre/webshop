@@ -37,7 +37,7 @@ const Login = () => {
               name="username"
               value={formData.username}
               onChange={handleInputChange}
-              className="input input-bordered input-accent w-full max-w-xs"
+              className="input input-bordered input-neutral w-full max-w-xs"
               required
             />
           </div>
@@ -49,13 +49,13 @@ const Login = () => {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className="input input-bordered input-accent w-full max-w-xs"
+              className="input input-bordered input-neutral w-full max-w-xs"
               required
             />
           </div>
-          <button type="submit" className="btn btn-accent btn-wide mb-1">Log In</button>
+          <button type="submit" className="btn btn-neutral btn-wide mb-1">Log In</button>
         </form>
-        <Link to="/signup" className="btn btn-accent btn-wide">Sign Up</Link>
+        <Link to="/signup" className="btn btn-neutral btn-wide">Register</Link>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {Link} from 'react-router-dom';
 
-const Signup = () => {
+const Register = () => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -19,7 +19,7 @@ const Signup = () => {
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <div className="signup-container">
+      <div className="register-container">
         <form onSubmit={handleSubmit}>
           <div className="mb-1">
             <input
@@ -29,7 +29,7 @@ const Signup = () => {
               name="username"
               value={formData.username}
               onChange={handleInputChange}
-              className="input input-bordered input-accent w-full max-w-xs"
+              className="input input-bordered input-neutral w-full max-w-xs"
               required
             />
           </div>
@@ -41,7 +41,7 @@ const Signup = () => {
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className="input input-bordered input-accent w-full max-w-xs"
+              className="input input-bordered input-neutral w-full max-w-xs"
               required
             />
           </div>
@@ -53,16 +53,16 @@ const Signup = () => {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className="input input-bordered input-accent w-full max-w-xs"
+              className="input input-bordered input-neutral w-full max-w-xs"
               required
             />
           </div>
-          <button type="submit" className="btn btn-accent btn-wide mb-1">Sign Up</button>
+          <button type="submit" className="btn btn-neutral btn-wide mb-1">Register</button>
         </form>
-        <Link to="/login" className="btn btn-accent btn-wide">Sign In</Link>
+        <Link to="/login" className="btn btn-neutral btn-wide">Log In</Link>
       </div>
     </div>
   );
 };
 
-export default Signup;
+export default Register;
