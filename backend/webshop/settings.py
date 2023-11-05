@@ -20,17 +20,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-14y3#_u^q^alohw*-q5h%c3#6u8h!v&9-g6eca=p1=h28$^f)-'
+SECRET_KEY = 'django-insecure-=!628&(%+pzen&1ma-*7_&^%&$=o90%nf&_&t4h+uc!tbd3iev'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
+    'shop',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +39,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -48,6 +48,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",  # Replace with your front-end origin
+]
+CORS_ALLOW_CREDENTIALS = True
+
+ALLOWED_HOSTS = []
 
 ROOT_URLCONF = 'webshop.urls'
 
@@ -69,6 +76,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'webshop.wsgi.application'
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8080'
+]
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
