@@ -21,3 +21,5 @@ build
 *.njsproj
 *.sln
 *.sw?
+
+shop/migrations
