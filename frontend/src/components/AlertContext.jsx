@@ -24,7 +24,8 @@ const AlertProvider = ({ children }) => {
       // Store the timeout ID
       setTimeoutId(newTimeoutId);
     }
-  }, [error, success, timeoutId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error, success]);
 
   return (
     <AlertContext.Provider value={{ error, setError, success, setSuccess }}>

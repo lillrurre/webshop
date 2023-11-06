@@ -77,9 +77,6 @@ const Shop = () => {
   const handleGenerateDBData = (e) => {
     e.preventDefault()
 
-    // Log out so the user is set to null to avoid bugs
-    logout()
-
     fetch('http://localhost:8000/api/database/populate/', {
       method: 'POST',
     })
