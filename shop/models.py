@@ -1,8 +1,15 @@
+"""
+    Models for the WebShop
+"""
+
 from django.db import models
 from django.contrib.auth.models import User
 
 
 class Item(models.Model):
+    """
+    The Item model represents an object that can be sold in the web shop
+    """
     objects = None
     id = models.IntegerField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

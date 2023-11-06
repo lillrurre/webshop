@@ -1,9 +1,11 @@
+"""
+    All WebShop API handlers are defined in views.py
+"""
+
 from django.contrib.auth import login, authenticate, update_session_auth_hash, logout
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.views.generic import TemplateView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
@@ -16,6 +18,11 @@ from .serializers import ItemSerializer
 @permission_classes([AllowAny])
 @ensure_csrf_cookie
 def login_user(request):
+    """
+
+    :param request:
+    :return:
+    """
     # Get the username and password from the request data
     username = request.data.get('username')
     password = request.data.get('password')
@@ -31,13 +38,18 @@ def login_user(request):
     if user is not None:
         login(request, user)
         return Response({'message': 'Login successful'}, status=200)
-    else:
-        return Response({'error': 'Invalid username or password'}, status=401)
+
+    return Response({'error': 'Invalid username or password'}, status=401)
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout_user(request):
+    """
+
+    :param request:
+    :return:
+    """
     # Log the user out
     logout(request)
     return Response({'message': 'Logged out successfully.'}, status=200)
@@ -46,6 +58,11 @@ def logout_user(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_user(request):
+    """
+
+    :param request:
+    :return:
+    """
     # Get user registration data from the request
     username = request.data.get('username')
     password = request.data.get('password')
@@ -64,13 +81,18 @@ def register_user(request):
 
     if user:
         return Response({'message': 'Registration successful'}, status=201)
-    else:
-        return Response({'error': 'Registration failed'}, status=400)
+
+    return Response({'error': 'Registration failed'}, status=400)
 
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_password(request):
+    """
+
+    :param request:
+    :return:
+    """
     # Get the current user
     user = request.user
 
@@ -99,42 +121,72 @@ def update_password(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def populate_database(request):
+    """
+
+    :return:
+    """
     # Delete all existing users and items
     items_data = [
-        {"title": "Shoes", "description": "High quality shoes. Size 42. Color white.", "price": 75.99},
-        {"title": "Shoes", "description": "Running shoes. Size 39. Color orange.", "price": 119.99},
-        {"title": "Shoes", "description": "Skiing shoes. Size 42. Color green.", "price": 189.50},
-        {"title": "Shoes", "description": "Sneakers. Size 39. Color white.", "price": 60.00},
-        {"title": "Shoes", "description": "Trail-run shoes. Size 42. Color red.", "price": 129.00},
-        {"title": "Shoes", "description": "High-heels. Size 38. Color black.", "price": 199.99},
-
-        {"title": "Jeans", "description": "Black jeans. Size XXL. Wide fit.", "price": 80.99},
-        {"title": "Jeans", "description": "Blue jeans. Size XL. Stretchy", "price": 63.99},
-        {"title": "Jeans", "description": "Red jeans. Size L. Color blue.", "price": 45.99},
-        {"title": "Jeans", "description": "Green jeans. Size M. Slim-fit", "price": 70.00},
-        {"title": "Jeans", "description": "Black jeans. Size S. Durable material", "price": 45.00},
-        {"title": "Jeans", "description": "Blue jeans. Size XS. Cheap and durable", "price": 30.00},
-
-        {"title": "Socks", "description": "Warm socks for the winter. Size 40-45. Color blue.", "price": 3.99},
-        {"title": "Socks", "description": "Sporty socks for running. Size L. Color black.", "price": 13.99},
-        {"title": "Socks", "description": "Wool socks. Size 35-38. 5 pairs. Color white.", "price": 7.50},
-        {"title": "Socks", "description": "Basic socks. One size. Color black.", "price": 1.00},
-        {"title": "Socks", "description": "Low socks for the summer. Size 39-42. Color white.", "price": 2.50},
-        {"title": "Socks", "description": "Sporty socks for running. Size L. Color black.", "price": 13.99},
-
-        {"title": "Jacket", "description": "Winter jacket. Size XL. Color black.", "price": 345.00},
-        {"title": "Jacket", "description": "Summer jacket. Size S. Color white.", "price": 245.00},
-        {"title": "Jacket", "description": "Running jacket. Size M. Color black.", "price": 127.00},
-        {"title": "Jacket", "description": "Rain jacket. Size L. Color gray.", "price": 499.99},
-        {"title": "Jacket", "description": "Skiing jacket. Size XS. Color red.", "price": 300.50},
-        {"title": "Jacket", "description": "Winter jacket. Size XXL. Color green.", "price": 125.50},
-
-        {"title": "Jacket", "description": "Winter jacket. Size XL. Color black.", "price": 345.00},
-        {"title": "Jacket", "description": "Summer jacket. Size S. Color white.", "price": 245.00},
-        {"title": "Jacket", "description": "Running jacket. Size M. Color black.", "price": 127.00},
-        {"title": "Jacket", "description": "Rain jacket. Size L. Color gray.", "price": 499.99},
-        {"title": "Jacket", "description": "Skiing jacket. Size XS. Color red.", "price": 300.50},
-        {"title": "Jacket", "description": "Winter jacket. Size XXL. Color green.", "price": 125.50},
+        {"title": "Shoes", "description":
+            "High quality shoes. Size 42. Color white.", "price": 75.99},
+        {"title": "Shoes", "description":
+            "Running shoes. Size 39. Color orange.", "price": 119.99},
+        {"title": "Shoes", "description":
+            "Skiing shoes. Size 42. Color green.", "price": 189.50},
+        {"title": "Shoes", "description":
+            "Sneakers. Size 39. Color white.", "price": 60.00},
+        {"title": "Shoes", "description":
+            "Trail-run shoes. Size 42. Color red.", "price": 129.00},
+        {"title": "Shoes", "description":
+            "High-heels. Size 38. Color black.", "price": 199.99},
+        {"title": "Jeans", "description":
+            "Black jeans. Size XXL. Wide fit.", "price": 80.99},
+        {"title": "Jeans", "description":
+            "Blue jeans. Size XL. Stretchy", "price": 63.99},
+        {"title": "Jeans", "description":
+            "Red jeans. Size L. Color blue.", "price": 45.99},
+        {"title": "Jeans", "description":
+            "Green jeans. Size M. Slim-fit", "price": 70.00},
+        {"title": "Jeans", "description":
+            "Black jeans. Size S. Durable material", "price": 45.00},
+        {"title": "Jeans", "description":
+            "Blue jeans. Size XS. Cheap and durable", "price": 30.00},
+        {"title": "Socks", "description":
+            "Warm socks for the winter. Size 40-45. Color blue.", "price": 3.99},
+        {"title": "Socks", "description":
+            "Sporty socks for running. Size L. Color black.", "price": 13.99},
+        {"title": "Socks", "description":
+            "Wool socks. Size 35-38. 5 pairs. Color white.", "price": 7.50},
+        {"title": "Socks", "description":
+            "Basic socks. One size. Color black.", "price": 1.00},
+        {"title": "Socks", "description":
+            "Low socks for the summer. Size 39-42. Color white.", "price": 2.50},
+        {"title": "Socks", "description":
+            "Sporty socks for running. Size L. Color black.", "price": 13.99},
+        {"title": "Jacket", "description":
+            "Winter jacket. Size XL. Color black.", "price": 345.00},
+        {"title": "Jacket", "description":
+            "Summer jacket. Size S. Color white.", "price": 245.00},
+        {"title": "Jacket", "description":
+            "Running jacket. Size M. Color black.", "price": 127.00},
+        {"title": "Jacket", "description":
+            "Rain jacket. Size L. Color gray.", "price": 499.99},
+        {"title": "Jacket", "description":
+            "Skiing jacket. Size XS. Color red.", "price": 300.50},
+        {"title": "Jacket", "description":
+            "Winter jacket. Size XXL. Color green.", "price": 125.50},
+        {"title": "Jacket", "description":
+            "Winter jacket. Size XL. Color black.", "price": 345.00},
+        {"title": "Jacket", "description":
+            "Summer jacket. Size S. Color white.", "price": 245.00},
+        {"title": "Jacket", "description":
+            "Running jacket. Size M. Color black.", "price": 127.00},
+        {"title": "Jacket", "description":
+            "Rain jacket. Size L. Color gray.", "price": 499.99},
+        {"title": "Jacket", "description":
+            "Skiing jacket. Size XS. Color red.", "price": 300.50},
+        {"title": "Jacket", "description":
+            "Winter jacket. Size XXL. Color green.", "price": 125.50},
     ]
 
     # Delete all existing users and items
@@ -174,6 +226,11 @@ def populate_database(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def insert_item(request):
+    """
+
+    :param request:
+    :return:
+    """
     # Get data from the request
     data = {
         'user': request.user.id,
@@ -185,18 +242,20 @@ def insert_item(request):
     # Create a new item
     serializer = ItemSerializer(data=data)
 
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=201)
-    else:
-        return Response(serializer.errors, status=400)
+    return Response(serializer.data, status=201)
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def purchase_item(request):
+    """
+    purchase_item is used by the web shop users to purchase items
+    :param request: contains the id of the item to purchase
+    :return: the updated item
+    """
     # Get the item ID to be purchased from the request
     item_id = request.data.get('item_id')
+    user_id = request.user.id
 
     # Check if the item exists
     item = Item.objects.filter(id=item_id).first()
@@ -208,28 +267,47 @@ def purchase_item(request):
     if item.state != 'ON_SALE':
         return Response({'error': 'Item is not available for purchase.'}, status=400)
 
+    # Check that the item does not belong to the user
+    if item.user.id == user_id:
+        return Response({'error': 'Cannot purchase own items'}, status=400)
+
+    # update the owner of the item
+    item.user.id = user_id
+
     # Mark the item as sold
     item.state = 'SOLD'
     item.save()
 
-    return Response({'message': 'Item purchased successfully.'}, status=200)
+    # Serialize and return the updated item
+    serializer = ItemSerializer(item, many=False)
+    return Response(serializer.data, status=200)
 
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_item(request):
+    """
+    update_item s used by a user that owns an item to update the price
+    or set on sale/remove from sale
+    :param request: contains the information of the updated item
+    :return: the updated version of the old item
+    """
     # Get the item ID from the request data
     item_id = request.data.get('id')
 
     # Retrieve the item from the database
-    oldItem = Item.objects.filter(id=item_id, user=request.user).first()
+    old_item = Item.objects.filter(id=item_id, user=request.user).first()
 
-    if not oldItem:
-        return Response({'error': 'Item not found or does not belong to the authenticated user.'}, status=404)
+    if not old_item:
+        return Response(
+            {'error': 'Item not found or does not belong to the authenticated user.'}, status=404
+        )
 
     # Check if the item is already marked as 'SOLD'
-    if oldItem.state == 'SOLD':
-        return Response({'error': 'Item is already marked as SOLD and cannot be modified.'}, status=400)
+    if old_item.state == 'SOLD':
+        return Response(
+            {'error': 'Item is already marked as SOLD and cannot be modified.'}, status=400
+        )
 
     price = float(request.data.get('price'))
     state = request.data.get('state')
@@ -237,17 +315,21 @@ def update_item(request):
     if price < 0:
         return Response({'error': 'Item price must be positive'}, status=400)
 
-    oldItem.state = state
-    oldItem.price = price
+    old_item.state = state
+    old_item.price = price
 
-    oldItem.save()
-    serializer = ItemSerializer(oldItem, many=False)
+    old_item.save()
+    serializer = ItemSerializer(old_item, many=False)
     return Response(serializer.data, status=200)
 
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_items(request):
+    """
+    get_items is used at the landing page of the web shop
+    :return: all objects in the database
+    """
     # Retrieve all items from the database
     items = Item.objects.all()
 
@@ -260,6 +342,11 @@ def get_items(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_own_items(request):
+    """
+    get_own_items get the item for the logged-in user
+    :param request: the request contains the user information
+    :return: all the object the user owns
+    """
     # Retrieve items owned by the authenticated user
     items = Item.objects.filter(user=request.user)
 
@@ -271,7 +358,12 @@ def get_own_items(request):
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def get_items_by_title(request, title):
+def get_items_by_title(title):
+    """
+    get_items_by_title uses fuzzy finding to search for objects in the shop
+    :param title: URL parameter to search with.
+    :return: all found objects are returned.
+    """
     # Retrieve items with titles that match the provided title (fuzzy find)
     items = Item.objects.filter(Q(title__icontains=title))
 

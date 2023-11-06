@@ -1,4 +1,8 @@
-from django.urls import path, re_path
+"""
+    URLs for the WebShop API
+"""
+
+from django.urls import path
 from . import views
 
 urlpatterns = [
