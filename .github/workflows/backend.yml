@@ -19,4 +19,4 @@ jobs:
       - name: Lint
         run: |
           pip install pylint pylint-django 
-          pylint shop webshop --ignore 'serializers.py' --ignore-paths 'shop/migrations/'
+          pylint shop webshop --ignore 'serializers.py' --ignore-paths 'shop/migrations/' --ignored-argument-names 'request'
