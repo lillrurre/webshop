@@ -81,7 +81,7 @@ const Account = () => {
       <div>
         <div className="navbar bg-base-100">
           <div className="flex-1">
-            <a className="btn btn-ghost normal-case text-xl">Web shop</a>
+            <p className="btn btn-ghost normal-case text-xl">Web shop</p>
           </div>
           <div className="flex-none">
             <button onClick={handleShop}  className="btn btn-neutral ml-1 mr-1">

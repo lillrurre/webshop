@@ -77,6 +77,9 @@ const Shop = () => {
   const handleGenerateDBData = (e) => {
     e.preventDefault()
 
+    // Log out so the user is set to null to avoid bugs
+    logout()
+
     fetch('http://localhost:8000/api/database/populate/', {
       method: 'POST',
     })
@@ -100,7 +103,7 @@ const Shop = () => {
       <div className="flex flex-col h-screen">
         <div className="navbar bg-base-100">
           <div className="flex-1">
-            <a className="btn btn-ghost normal-case text-xl">Web shop</a>
+            <p className="btn btn-ghost normal-case text-xl">Web shop</p>
           </div>
           <div className="flex-none">
             <button onClick={handleGenerateDBData} className="btn btn-neutral ml-1 mr-1">

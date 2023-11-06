@@ -24,7 +24,8 @@ const AlertProvider = ({ children }) => {
       // Store the timeout ID
       setTimeoutId(newTimeoutId);
     }
-  }, [error, success]);
+  }, [error, success, timeoutId]);
+
   return (
     <AlertContext.Provider value={{ error, setError, success, setSuccess }}>
       {children}

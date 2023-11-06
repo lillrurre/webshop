@@ -1,13 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import {UserContext} from './UserContext.jsx';
-import {Alert, AlertContext} from "./AlertContext.jsx";
+import {UserContext} from "./UserContext";
+import {Alert, AlertContext} from "./AlertContext";
 
 const Login = () => {
 
   // Get the user data, login and related data from the user context provider
   const { user, login } = useContext(UserContext)
-  const { error, success } = useContext(AlertContext)
+  const { error } = useContext(AlertContext)
 
   // Navigate to move between URLs
   const navigate = useNavigate()
@@ -40,7 +40,7 @@ const Login = () => {
     if (user !== null && error === '') {
       navigate('/')
     }
-  }, [user])
+  }, [error, navigate, user])
 
   return (
     <div>
@@ -48,7 +48,7 @@ const Login = () => {
       <div>
         <div className="navbar bg-base-100">
           <div className="flex-1">
-            <a className="btn btn-ghost normal-case text-xl" onClick={handleShop}>Web shop</a>
+            <p className="btn btn-ghost normal-case text-xl" onClick={handleShop}>Web shop</p>
           </div>
         </div>
       </div>

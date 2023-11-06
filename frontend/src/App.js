@@ -1,11 +1,12 @@
 import {Route, Routes} from 'react-router-dom';
-import Login from './components/login.jsx';
-import Shop from './components/shop.jsx';
-import Register from './components/Register.jsx';
 import {UserProvider} from './components/UserContext.jsx';
-import Account from "./components/Account.jsx";
-import Inventory from "./components/Inventory.jsx";
 import {AlertProvider} from './components/AlertContext.jsx';
+import React from "react";
+import Shop from "./components/Shop";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Account from "./components/Account";
+import Inventory from "./components/Inventory";
 
 const App = () => {
 

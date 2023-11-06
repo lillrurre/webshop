@@ -1,9 +1,9 @@
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "./UserContext.jsx";
-import NotLoggedIn from "./NotLoggedIn.jsx";
 import {useNavigate} from "react-router-dom";
 import Cookie from "js-cookie";
-import {Alert, AlertContext} from "./AlertContext.jsx";
+import {Alert, AlertContext} from "./AlertContext";
+import NotLoggedIn from "./NotLoggedIn";
 
 const Inventory = () => {
 
@@ -31,6 +31,7 @@ const Inventory = () => {
       setError('Failed to get own items!')
       console.error('failed to fetch items: ' + error)
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const updateItem = (item) => {
@@ -143,7 +144,7 @@ const Inventory = () => {
       <div>
         <div className="navbar bg-base-100">
           <div className="flex-1">
-            <a className="btn btn-ghost normal-case text-xl">Web shop</a>
+            <p className="btn btn-ghost normal-case text-xl">Web shop</p>
           </div>
           <div className="flex-none">
             <button onClick={handleShop}  className="btn btn-neutral ml-1 mr-1">
@@ -211,10 +212,10 @@ const Inventory = () => {
                 {item.title}
                 {item.state === 'NONE' ? null : (<div className="absolute top-6 right-6 badge badge-outline badge-secondary">{item.state}</div>)}
               </h2>
-              <a className="text-neutral-content/100">{item.description}</a>
+              <p className="text-neutral-content/100">{item.description}</p>
               <div className="flex justify-between items-center">
                 <div className="text-neutral-content/60">Added on: {item.dateAdded.split('T')[0]}</div>
-                <a className="text-neutral-content/80">{item.price} €</a>
+                <p className="text-neutral-content/80">{item.price} €</p>
               </div>
               <div className="flex justify-center items-center">
                 <button onClick={() => handleUpdateSaleState(item.id, 'ON_SALE')} className="btn btn-neutral mr-1 ml-1" disabled={item.state === 'SOLD'}>Sell</button>
