@@ -2,8 +2,6 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 
 from shop.models import Item
-import random
-
 
 class Command(BaseCommand):
     help = 'Populate the database with users and items'
@@ -17,28 +15,24 @@ class Command(BaseCommand):
             {"title": "Shoes", "description": "Sneakers. Size 39. Color white.", "price": 60.00},
             {"title": "Shoes", "description": "Trail-run shoes. Size 42. Color red.", "price": 129.00},
             {"title": "Shoes", "description": "High-heels. Size 38. Color black.", "price": 199.99},
-
             {"title": "Jeans", "description": "Black jeans. Size XXL. Wide fit.", "price": 80.99},
             {"title": "Jeans", "description": "Blue jeans. Size XL. Stretchy", "price": 63.99},
             {"title": "Jeans", "description": "Red jeans. Size L. Color blue.", "price": 45.99},
             {"title": "Jeans", "description": "Green jeans. Size M. Slim-fit", "price": 70.00},
             {"title": "Jeans", "description": "Black jeans. Size S. Durable material", "price": 45.00},
             {"title": "Jeans", "description": "Blue jeans. Size XS. Cheap and durable", "price": 30.00},
-
             {"title": "Socks", "description": "Warm socks for the winter. Size 40-45. Color blue.", "price": 3.99},
             {"title": "Socks", "description": "Sporty socks for running. Size L. Color black.", "price": 13.99},
             {"title": "Socks", "description": "Wool socks. Size 35-38. 5 pairs. Color white.", "price": 7.50},
             {"title": "Socks", "description": "Basic socks. One size. Color black.", "price": 1.00},
             {"title": "Socks", "description": "Low socks for the summer. Size 39-42. Color white.", "price": 2.50},
-            {"title": "Socks", "description": "Sporty socks for running. Size L. Color black.","price": 13.99},
-
+            {"title": "Socks", "description": "Sporty socks for running. Size L. Color black.", "price": 13.99},
             {"title": "Jacket", "description": "Winter jacket. Size XL. Color black.", "price": 345.00},
-            {"title": "Jacket", "description": "Summer jacket. Size S. Color white.", "price": 245.00},
+            {"title": "Jacket", "description": "Summer jacket. Size XXL. Color pink.", "price": 127.77},
             {"title": "Jacket", "description": "Running jacket. Size M. Color black.", "price": 127.00},
             {"title": "Jacket", "description": "Rain jacket. Size L. Color gray.", "price": 499.99},
             {"title": "Jacket", "description": "Skiing jacket. Size XS. Color red.", "price": 300.50},
             {"title": "Jacket", "description": "Winter jacket. Size XXL. Color green.", "price": 125.50},
-
             {"title": "Jacket", "description": "Winter jacket. Size XL. Color black.", "price": 345.00},
             {"title": "Jacket", "description": "Summer jacket. Size S. Color white.", "price": 245.00},
             {"title": "Jacket", "description": "Running jacket. Size M. Color black.", "price": 127.00},
@@ -46,7 +40,6 @@ class Command(BaseCommand):
             {"title": "Jacket", "description": "Skiing jacket. Size XS. Color red.", "price": 300.50},
             {"title": "Jacket", "description": "Winter jacket. Size XXL. Color green.", "price": 125.50},
         ]
-
         self.stdout.write(self.style.SUCCESS('Emptying the database...'))
 
         # Delete all existing users and items
