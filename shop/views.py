@@ -1,7 +1,6 @@
 """
     All WebShop API handlers are defined in views.py
 """
-
 from django.contrib.auth import login, authenticate, update_session_auth_hash, logout
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -19,9 +18,9 @@ from .serializers import ItemSerializer
 @ensure_csrf_cookie
 def login_user(request):
     """
-
-    :param request:
-    :return:
+    login creates a new CSRF token and session id for a registered user
+    :param request: contains the username and password for the user that signs in
+    :return: OK with the user ID or an error
     """
     # Get the username and password from the request data
     username = request.data.get('username')
@@ -37,7 +36,7 @@ def login_user(request):
     # If authentication is successful, log the user in
     if user is not None:
         login(request, user)
-        return Response({'message': 'Login successful'}, status=200)
+        return Response(user.id, status=200)
 
     return Response({'error': 'Invalid username or password'}, status=401)
 
@@ -46,9 +45,9 @@ def login_user(request):
 @permission_classes([IsAuthenticated])
 def logout_user(request):
     """
-
-    :param request:
-    :return:
+    logout invalidates the users session token
+    :param request: the request must include a CSRF token.
+    :return: OK or error
     """
     # Log the user out
     logout(request)
@@ -59,9 +58,9 @@ def logout_user(request):
 @permission_classes([AllowAny])
 def register_user(request):
     """
-
-    :param request:
-    :return:
+    register user creates a new web shop user
+    :param request: contains the username, email and password for the user
+    :return: OK or error
     """
     # Get user registration data from the request
     username = request.data.get('username')
@@ -89,9 +88,9 @@ def register_user(request):
 @permission_classes([IsAuthenticated])
 def update_password(request):
     """
-
-    :param request:
-    :return:
+    update password updates the password for a user
+    :param request: the request should contain the old and a new password
+    :return: OK or error
     """
     # Get the current user
     user = request.user
@@ -102,7 +101,7 @@ def update_password(request):
 
     # Check if the old and new passwords are provided
     if not old_password or not new_password:
-        return Response({'error': 'Both old_password and new_password are required.'}, status=400)
+        return Response({'error': 'Both old and new password are required.'}, status=400)
 
     # Check if the old password matches the user's current password
     if not user.check_password(old_password):
@@ -122,8 +121,8 @@ def update_password(request):
 @permission_classes([AllowAny])
 def populate_database(request):
     """
-
-    :return:
+    populate database empties and adds new items to the database
+    :return: OK, or error if the operation fails.
     """
     # Delete all existing users and items
     items_data = [
@@ -166,7 +165,7 @@ def populate_database(request):
         {"title": "Jacket", "description":
             "Winter jacket. Size XL. Color black.", "price": 345.00},
         {"title": "Jacket", "description":
-            "Summer jacket. Size S. Color white.", "price": 245.00},
+            "Summer jacket. Size XXL. Color pink.", "price": 127.77},
         {"title": "Jacket", "description":
             "Running jacket. Size M. Color black.", "price": 127.00},
         {"title": "Jacket", "description":
@@ -227,60 +226,72 @@ def populate_database(request):
 @permission_classes([IsAuthenticated])
 def insert_item(request):
     """
-
-    :param request:
-    :return:
+    insert item creates a new item and puts it on sale
+    :param request: contains the item information
+    :return: todo, nothing
     """
     # Get data from the request
     data = {
-        'user': request.user.id,
+        'user': request.user,
         'title': request.data.get('title'),
         'description': request.data.get('description'),
         'price': float(request.data.get('price'))
     }
 
-    # Create a new item
-    serializer = ItemSerializer(data=data)
+    Item.objects.create(**data)
 
-    return Response(serializer.data, status=201)
+    return Response({}, status=201)
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def purchase_item(request):
+def purchase_items(request):
     """
-    purchase_item is used by the web shop users to purchase items
-    :param request: contains the id of the item to purchase
-    :return: the updated item
+    purchase_items is used by web shop users to purchase items.
+    :param request: contains an array of items to purchase
+    :return: a list of updated items
     """
-    # Get the item ID to be purchased from the request
-    item_id = request.data.get('item_id')
+    # Get the list of item IDs to be purchased from the request
+    item_ids = request.data
+
+    if not item_ids:
+        return Response({'error': 'No items to purchase provided.'}, status=400)
+
     user_id = request.user.id
+    updated_items = []
 
-    # Check if the item exists
-    item = Item.objects.filter(id=item_id).first()
+    for item_data in item_ids:
+        item_id = item_data.get('id')
+        # Check if the item exists
+        item = Item.objects.filter(id=item_id).first()
 
-    if not item:
-        return Response({'error': 'Item not found.'}, status=404)
+        if not item:
+            return Response({'error': 'does not exist', 'id': f'{item_id}'}, status=404)
 
-    # Check if the item is available for purchase
-    if item.state != 'ON_SALE':
-        return Response({'error': 'Item is not available for purchase.'}, status=400)
+        # Check if the item is available for purchase
+        if item.state != 'ON_SALE':
+            return Response({'error': 'is already sold', 'id': f'{item_id}'}, status=400)
 
-    # Check that the item does not belong to the user
-    if item.user.id == user_id:
-        return Response({'error': 'Cannot purchase own items'}, status=400)
+        # Check that the item does not belong to the user
+        if item.user.id == user_id:
+            return Response({'error': 'is your own item', 'id': f'{item_id}'}, status=400)
 
-    # update the owner of the item
-    item.user.id = user_id
+        # Check that the item price matches (allow a small errors
+        diff = abs(float(item.price) - float(item_data.get('price')))
+        if diff > 0.001:
+            return Response({'error': 'has the wrong price', 'id': f'{item_id}'}, status=400)
 
-    # Mark the item as sold
-    item.state = 'SOLD'
-    item.save()
+        # Update the owner of the item
+        item.user = request.user
+        item.save()
 
-    # Serialize and return the updated item
-    serializer = ItemSerializer(item, many=False)
-    return Response(serializer.data, status=200)
+        # Mark the item as sold
+        item.state = 'SOLD'
+        item.save()
+
+        updated_items.append(ItemSerializer(item).data)
+
+    return Response(updated_items, status=200)
 
 
 @api_view(['PUT'])
@@ -301,12 +312,6 @@ def update_item(request):
     if not old_item:
         return Response(
             {'error': 'Item not found or does not belong to the authenticated user.'}, status=404
-        )
-
-    # Check if the item is already marked as 'SOLD'
-    if old_item.state == 'SOLD':
-        return Response(
-            {'error': 'Item is already marked as SOLD and cannot be modified.'}, status=400
         )
 
     price = float(request.data.get('price'))
@@ -358,9 +363,10 @@ def get_own_items(request):
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def get_items_by_title(title):
+def get_items_by_title(request, title):
     """
     get_items_by_title uses fuzzy finding to search for objects in the shop
+    :param request:
     :param title: URL parameter to search with.
     :return: all found objects are returned.
     """
