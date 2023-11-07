@@ -21,15 +21,13 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    fetch('http://localhost:8000/api/register/', {
+    fetch('http://localhost:8080/api/register/', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(formData),
     })
       .then((res) => {
-        if (!res.ok) {
-          throw new Error('Registration failed')
-        }
+        if (!res.ok) throw new Error('Registration failed')
         setSuccess('Registration was successful')
         navigate('/login')
       })
@@ -93,7 +91,7 @@ const Register = () => {
             </div>
             <button type="submit" className="btn btn-neutral btn-wide mb-1">Register</button>
           </form>
-          <Link to="/login" className="btn btn-neutral btn-wide">Log In</Link>
+          <Link to="/login" className="btn btn-neutral btn-wide">Already have an account?</Link>
         </div>
       </div>
     </div>
