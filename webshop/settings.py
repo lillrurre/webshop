@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os.path
 from pathlib import Path
+from django.core.management.commands.runserver import Command as Runserver
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +27,8 @@ DEBUG = True
 
 # Application definition
 
+Runserver.default_port = "8080"
+
 INSTALLED_APPS = [
     'shop',
     'corsheaders',
@@ -40,7 +43,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -52,11 +54,9 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8080',
     'http://localhost:8000',
-    'http://localhost:5173',
     'http://localhost:3000',
     'http://127.0.0.1:8080',
     'http://127.0.0.1:8000',
-    'http://127.0.0.1:5173',
     'http://127.0.0.1:3000',
 ]
 
@@ -96,12 +96,12 @@ WSGI_APPLICATION = 'webshop.wsgi.application'
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8080',
+    'http://localhost:8888',
     'http://localhost:8000',
-    'http://localhost:5173',
     'http://localhost:3000',
     'http://127.0.0.1:8080',
+    'http://127.0.0.1:8888',
     'http://127.0.0.1:8000',
-    'http://127.0.0.1:5173',
     'http://127.0.0.1:3000',
 ]
 
