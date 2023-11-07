@@ -1,0 +1,54 @@
+This file contains the features that should be implemented in the web shop project.
+
+### Features
+- [x] Django backend.
+- [x] SQLite database.
+- [x] React frontend.
+- [x] [requirements.txt](./requirements.txt) at the root of the project.
+- [x] [package.json](./frontend/package.json) in the frontend directory.
+- [x] [src](./frontend/src) in the frontend.
+- [x] [build](./frontend/build) on the frontend.
+- [x] The Django server serves the frontend.
+- [x] The frontend is reachable at [localhost:8080](http://localhost:8080]
+- [x] Items:
+  - [x] Items have a visible title.
+  - [x] Items have a visible description.
+  - [x] Items have a visible price.
+  - [x] Items show the date they were added.
+- [x] Shop view:
+  - [x] All users can browse items.
+  - [x] All users can search for items (uses fuzzy finding to make it more user-friendly).
+  - [x] The shop view as navigation to other views.
+  - [x] The landing page is the shop view
+  - [x] The landing pages allows any user to perform a database migration.
+  - [x] Cart:
+    - [x] Authorized users can add items to their cart.
+    - [x] Authorized users can remove items from their cart.
+    - [x] Authorized users can not add own items to their cart.
+    - [x] Displays messages if a payment is not successful.
+    - [x] The cart persists when navigating to different views.
+  - [x] Payment:
+    - [x] Authorized users can pay for their cart.
+    - [x] The paid items owner is now the one who paid.
+    - [x] The items are not listed as 'for sale' anymore.
+    - [x] Payment fails if the user attempts to buy their own item &#8594; displays message next item.
+    - [x] Payment fails if the items price has changed &#8594; displays message next item &#8594; the price is updated.
+    - [x] Payment fails if the item is already sold &#8594; displays message next item &#8594; the user can manually remove the item from the cart.
+    - [x] Payment fails if the item has been removed from sale &#8594; displays message next item.
+    - [x] Payment fails if the item does not exist &#8594; displays message next item.
+- [x] Inventory:
+  - [x] The inventory displays the users items.
+  - [x] If the user is not authorized, a link to the login page is shown.
+  - [x] The user can update the price on any of their items.
+  - [x] The items show if they are on sale.
+  - [x] Items can be set to 'ON_SALE'.
+  - [x] Items can be removed from 'SALE'.
+  - [ ] Visualize: ON_SALE, SOLD and PURCHASED.
+  - [x] The inventory view has navigations to other pages.
+- [x] Account:
+  - [x] The account view allow the user to update their password.
+  - [x] The user must provide their old password and a new password.
+  - [x] The update fails if the old password is not correct.
+  - [x] The update fails if the passwords are the same.
+  - [x] When the user updates their password, a success or error message is shown.
+  - [x] If the user is not authorized, a link to the login page is shown.
