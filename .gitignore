@@ -10,7 +10,7 @@ lerna-debug.log*
 db.sqlite3
 
 node_modules
-build
+# build :kek:
 *.local
 
 # Editor directories and files
