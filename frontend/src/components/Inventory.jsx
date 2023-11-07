@@ -15,8 +15,8 @@ const Inventory = () => {
 
   const [items, setItems] = useState(null)
 
-  useEffect(() => {
-    fetch('http://localhost:8000/api/items/own/', {
+  const fetchOwnItems = () => {
+    fetch('http://localhost:8080/api/items/own/', {
       method: 'GET',
       headers: {
         'X-CSRFToken': Cookie.get('csrftoken'),
@@ -31,6 +31,10 @@ const Inventory = () => {
       setError('Failed to get own items!')
       console.error('failed to fetch items: ' + error)
     })
+  }
+
+  useEffect(() => {
+    fetchOwnItems()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -44,7 +48,7 @@ const Inventory = () => {
       return
     }
 
-    fetch('http://localhost:8000/api/item/update', {
+    fetch('http://localhost:8080/api/item/update/', {
       method: 'PUT',
       body: JSON.stringify(item),
       headers: {
@@ -85,7 +89,7 @@ const Inventory = () => {
 
   const handleAddItem = (e) => {
     e.preventDefault()
-    fetch('http://localhost:8000/api/item/create/', {
+    fetch('http://localhost:8080/api/item/create/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -95,13 +99,12 @@ const Inventory = () => {
       body: JSON.stringify(newItem),
     })
       .then((res) => {
-        if (res.ok) {
-          return res.json()
-        }
+        if (res.ok) return res.json()
+
         throw new Error('Failed to insert item!')
       })
       .then((item) => {
-        setItems([...items, item])
+        fetchOwnItems()
         setSuccess('Item created successfully!')
       })
       .catch((error) => {
@@ -111,9 +114,8 @@ const Inventory = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    if (name === 'price' && value < 0) {
-      return
-    }
+    if (name === 'price' && value < 0) return
+
     setNewItem({ ...newItem, [name]: value })
   };
 
@@ -142,7 +144,7 @@ const Inventory = () => {
     <div>
       <Alert/>
       <div>
-        <div className="navbar bg-base-100">
+        <div className="navbar bg-base-100 relative">
           <div className="flex-1">
             <p className="btn btn-ghost normal-case text-xl">Web shop</p>
           </div>
@@ -168,10 +170,10 @@ const Inventory = () => {
           <div className="mb-1">
             <input
               type="text"
-              placeholder="Name"
-              id="name"
-              name="name"
-              value={newItem.name}
+              placeholder="Title"
+              id="title"
+              name="title"
+              value={newItem.title}
               onChange={handleInputChange}
               className="input input-bordered input-neutral w-full max-w-xs"
               required
@@ -206,11 +208,11 @@ const Inventory = () => {
       </div>
       <div className="container max-h-[calc(100vh-64px)] overflow-y-auto">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">{items?.map((item) => (
-          <div key={item.id} className="card w-96 bg-base-300/25 text-primary-content">
+          <div key={item.id} className="card w-96 bg-base-300/25 text-primary-content relative">
             <div className="card-body">
               <h2 className="card-title text-neutral-content/100">
                 {item.title}
-                {item.state === 'NONE' ? null : (<div className="absolute top-6 right-6 badge badge-outline badge-secondary">{item.state}</div>)}
+                {item.state === 'ON_SALE' && (<div className="absolute top-6 right-6 badge badge-outline badge-secondary">On sale</div>)}
               </h2>
               <p className="text-neutral-content/100">{item.description}</p>
               <div className="flex justify-between items-center">
@@ -218,14 +220,14 @@ const Inventory = () => {
                 <p className="text-neutral-content/80">{item.price} €</p>
               </div>
               <div className="flex justify-center items-center">
-                <button onClick={() => handleUpdateSaleState(item.id, 'ON_SALE')} className="btn btn-neutral mr-1 ml-1" disabled={item.state === 'SOLD'}>Sell</button>
-                <button onClick={() => handleUpdateSaleState(item.id, 'NONE')} className="btn btn-neutral mr-1 ml-1" disabled={item.state === 'SOLD'}>Remove from sale</button>
-                <div className="dropdown">
-                  <label tabIndex={0} className="btn btn-neutral mr-1 ml-1" disabled={item.state === 'SOLD'}>Edit price</label>
-                  <ul tabIndex={0} className="p-2 menu dropdown-content z-[1] bg-transparent rounded-box w-52">
+                <button onClick={() => handleUpdateSaleState(item.id, 'ON_SALE')} className="btn btn-neutral mr-1 ml-1">Sell</button>
+                <button onClick={() => handleUpdateSaleState(item.id, 'SOLD')} className="btn btn-neutral mr-1 ml-1">Remove from sale</button>
+                <div className="dropdown relative">
+                  <label tabIndex={0} className="btn btn-neutral">Edit price</label>
+                  <ul tabIndex={0} className="dropdown-content z-50 menu p-2 shadow bg-base-100 rounded-box w-52">
                     <li>
                       <div className="join">
-                        <form onSubmit={ (e) => handleUpdatePrice(e, item.id)}>
+                        <form className={"w-80"} onSubmit={(e) => handleUpdatePrice(e, item.id)}>
                           <input type="number" name="price" placeholder={item.price + " €"} min="0" required className="input input-bordered join-item text-white"/>
                           <button type="submit" className="btn btn-neutral join-item rounded-r-full">Update</button>
                         </form>
@@ -243,6 +245,5 @@ const Inventory = () => {
     </div>
   )
 }
-
 
 export default Inventory

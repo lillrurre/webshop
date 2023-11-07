@@ -11,9 +11,7 @@ const AlertProvider = ({ children }) => {
   useEffect(() => {
     if (error || success) {
       // Clear any existing timeout
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
+      if (timeoutId) clearTimeout(timeoutId);
 
       // Set a new timeout to clear the alerts after 3 seconds
       const newTimeoutId = setTimeout(() => {

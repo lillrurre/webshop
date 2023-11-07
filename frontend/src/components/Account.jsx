@@ -27,7 +27,7 @@ const Account = () => {
       return
     }
 
-    fetch('http://localhost:8000/api/user/update/', {
+    fetch('http://localhost:8080/api/user/update/', {
       method: 'PUT',
       body: JSON.stringify(formData),
       headers: {
@@ -37,11 +37,9 @@ const Account = () => {
       credentials: 'include',
     })
       .then(res => {
-        if (res.ok) {
-          setSuccess('Password updated successfully!')
-        } else {
-          setError('Failed to update password!')
-        }
+        if (res.ok) setSuccess('Password updated successfully!')
+
+        throw new Error('Failed to update password!')
       })
       .catch((error) => {
         setError('Failed to update password!')
@@ -81,7 +79,7 @@ const Account = () => {
       <div>
         <div className="navbar bg-base-100">
           <div className="flex-1">
-            <p className="btn btn-ghost normal-case text-xl">Web shop</p>
+            <p onClick={handleShop} className="btn btn-ghost normal-case text-xl">Web shop</p>
           </div>
           <div className="flex-none">
             <button onClick={handleShop}  className="btn btn-neutral ml-1 mr-1">

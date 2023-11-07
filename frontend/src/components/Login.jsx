@@ -36,11 +36,7 @@ const Login = () => {
   }
 
   // Navigate to the shop ('/') if no error and the user is ok
-  useEffect(() => {
-    if (user !== null && error === '') {
-      navigate('/')
-    }
-  }, [error, navigate, user])
+  useEffect(() => {if (user !== null && error === '') navigate('/')}, [error, navigate, user])
 
   return (
     <div>
@@ -81,7 +77,7 @@ const Login = () => {
             </div>
             <button type="submit" className="btn btn-neutral btn-wide mb-1">Log In</button>
           </form>
-          <Link to="/signup" className="btn btn-neutral btn-wide">Register</Link>
+          <Link to="/signup" className="btn btn-neutral btn-wide">Not registered yet?</Link>
         </div>
       </div>
     </div>

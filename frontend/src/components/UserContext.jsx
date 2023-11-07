@@ -1,4 +1,4 @@
-import {createContext, useContext, useState} from 'react';
+import {createContext, useContext, useEffect, useState} from 'react';
 import PropTypes from "prop-types";
 import Cookie from 'js-cookie'
 import {AlertContext} from "./AlertContext.jsx";
@@ -10,8 +10,23 @@ const UserProvider = ({ children }) => {
 
   const { setError } = useContext(AlertContext)
 
+  const setUserAndPersist = (userData) => {
+    // Set the user in the state
+    setUser(userData);
+    // Store the user data in local storage
+    localStorage.setItem('user', JSON.stringify(userData));
+  };
+
+  useEffect(() => {
+    // Check if user data is already stored in local storage
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUserAndPersist(JSON.parse(storedUser));
+    }
+  }, []);
+
   const login = (userData) => {
-    fetch('http://localhost:8000/api/login/', {
+    fetch('http://localhost:8080/api/login/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +40,7 @@ const UserProvider = ({ children }) => {
       }
       throw new Error('Log in failed')
     }).then((userData) => {
-      setUser(userData)
+      setUserAndPersist(userData)
     }).catch((err) => {
       setError('Username or password is incorrect')
       console.error(err)
@@ -33,21 +48,18 @@ const UserProvider = ({ children }) => {
   };
 
   const logout = () => {
-    fetch('http://localhost:8000/api/logout/', {
+    fetch('http://localhost:8080/api/logout/', {
       method: 'POST',
-      headers: {
-        'X-CSRFToken': Cookie.get('csrftoken'),
-      },
+      headers: {'X-CSRFToken': Cookie.get('csrftoken')},
       credentials: 'include',
     }).then(res => {
-      if (!res.ok) {
-        throw new Error('Log out failed')
-      }
-    }).then(() => {
-      setUser(null)
-    }).catch(() => {
-      setError('Log out failed')
+      if (!res.ok) throw new Error('Log out failed')
+    }).catch((error) => {
+      console.error(error)
     })
+    setUser(null)
+    localStorage.removeItem('user');
+    localStorage.removeItem('cart');
   };
 
   return (
