@@ -20,5 +20,4 @@ class Item(models.Model):
     state = models.CharField(max_length=10, choices=[
         ('ON_SALE', 'ON_SALE'),
         ('SOLD', 'SOLD'),
-        ('NONE', 'NONE'),
     ], default='ON_SALE')
