@@ -59,6 +59,13 @@ python manage.py makemigrations
 python manage.py migrate 
 ```
 
+Make sure the tables from the **shop** model is migrated. If you are not sure, you can run
+
+```bash
+python manage.py makemigrations shop
+python manage.py migrate shop
+```
+
 **Start the backend**
 ```bash
 python manage.py runserver 
